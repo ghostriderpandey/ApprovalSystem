@@ -1,0 +1,254 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="AdminPanel.master.cs" Inherits="AdminPanel_AdminPanel" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="images/favicon.ico" type="image/ico" />
+    <title>Approval System </title>
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href="../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <link href="../vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />
+    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <link href="../build/css/custom.min.css" rel="stylesheet">
+    <link href="../vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <%--<link href="../vendors/select2/dist/css/select2.css" rel="stylesheet" />--%>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" />
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="../vendors/select2/dist/js/select2.full.min.js"></script>
+
+    
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".selectcss").select2();
+        });
+    </script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js" type="text/javascript" charset="utf8"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js" type="text/javascript" charset="utf8"></script>
+
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style type="text/css">
+        table tr th {
+            background-color: #2A3F54;
+            color: white;
+        }
+
+        /*ul.msg_list li a .time {
+            font-size: 11px;
+            font-style: italic;
+            font-weight: bold;
+            position: inherit;
+            right: 37px;
+        }*/
+
+        ul.msg_list li a .message {
+            /* display: block !important; */
+            font-size: 11px;
+            float: right;
+            line-height: 17px;
+        }
+
+        .selectcss {
+            color: black;
+        }
+    </style>
+</head>
+<body class="nav-md">
+    <form id="form1" runat="server">
+        <div class="container body">
+            <div class="main_container">
+                <div class="col-md-3 left_col">
+                    <div class="left_col scroll-view">
+                        <div class="navbar nav_title" style="border: 0;">
+                            <a href="#" class="site_title"><i class="fa fa-paw"></i><span>Approval System</span></a>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <%-- <div class="profile clearfix">
+                            <div class="profile_pic">
+                                <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                            </div>
+                            <div class="profile_info">
+                                <span>Welcome,</span>
+                                <h2>
+                                    <asp:Label ID="lblUserName" runat="server" Text=""></asp:Label></h2>
+                            </div>
+                        </div>--%>
+
+                        <br />
+
+                        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                            <div class="menu_section">
+                                <%--<h3>General</h3>--%>
+                                <ul class="nav side-menu">
+
+                                    <asp:Repeater ID="Repeater1" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
+                                        <ItemTemplate>
+                                            <li>
+                                                <asp:HiddenField ID="link1" Value='<%#Eval("MenuLink") %>' runat="server" />
+                                                <asp:HiddenField ID="hdnlevel1" Value='<%#Eval("MenuID") %>' runat="server" />
+                                                <a href='<%#Eval("MenuLink").ToString()=="#" ? "#table" : Eval("MenuLink").ToString() %>'><i class='<%# Eval("cssClass") %>'></i><%#Eval("MenuName") %> <%#Eval("MenuLink").ToString()=="#" ? "<span class='fa fa-chevron-down'></span>" : "" %></a>
+                                                <ul class="nav child_menu">
+                                                    <asp:Repeater ID="Repeater2" OnItemDataBound="Repeater2_ItemDataBound" runat="server">
+                                                        <ItemTemplate>
+                                                            <asp:HiddenField ID="hdnlevel2" Value='<%#Eval("MenuID") %>' runat="server" />
+                                                            <asp:HiddenField ID="link2" Value='<%#Eval("MenuLink") %>' runat="server" />
+                                                            <li>
+                                                                <a href='<%#Eval("MenuLink").ToString()=="#" ? "#table" : Eval("MenuLink").ToString() %>'><%#Eval("MenuName") %> <%#Eval("MenuLink").ToString()=="#" ? "<span class='fa fa-chevron-down'></span>" : "" %></a>
+                                                                <ul class="nav child_menu">
+                                                                    <asp:Repeater ID="Repeater3" runat="server">
+                                                                        <ItemTemplate>
+                                                                            <li class="sub_menu">
+                                                                                <a href='<%#Eval("MenuLink") %>'><%#Eval("MenuName") %></a>
+                                                                            </li>
+                                                                        </ItemTemplate>
+                                                                    </asp:Repeater>
+                                                                </ul>
+                                                            </li>
+
+                                                        </ItemTemplate>
+                                                    </asp:Repeater>
+                                                </ul>
+                                            </li>
+                                        </ItemTemplate>
+                                    </asp:Repeater>
+
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <div class="sidebar-footer hidden-small">
+                            <a data-toggle="tooltip" data-placement="top" title="Settings">
+                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                            </a>
+                            <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                            </a>
+                            <a data-toggle="tooltip" data-placement="top" title="Lock">
+                                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                            </a>
+                            <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.aspx">
+                                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="top_nav">
+                    <div class="nav_menu">
+                        <div class="nav toggle toggle-text">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a> <span class="h5">Approval System</span>
+                        </div>
+                        <nav class="nav navbar-nav">
+                            <ul class=" navbar-right">
+                                <li class="nav-item dropdown open" style="padding-left: 15px;">
+                                    <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                        <img src="images/img.jpg" alt=""><asp:Label ID="lblUName" runat="server" Text=""></asp:Label>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="javascript:;">Profile</a>
+
+                                        <a class="dropdown-item" href="ChangePassword.aspx">Change Password</a>
+                                        <a class="dropdown-item" href="login.aspx"><i class="fa fa-sign-out pull-right"></i>Log Out</a>
+                                    </div>
+                                </li>
+                                <li role="presentation" class="nav-item dropdown open">
+                                    <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-envelope-o"></i>
+                                        <span class="badge bg-green">
+                                            <asp:Label ID="lblTotalNotification" runat="server" Text="0"></asp:Label></span>
+                                    </a>
+                                    <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
+                                        <asp:DataList ID="dataNotification" runat="server">
+                                            <ItemTemplate>
+                                                <li class="nav-item">
+                                                    <a class="dropdown-item">
+                                                        <span>
+                                                            <span><%#Eval("NoteType") %></span>
+                                                            <span class="time"><%#Eval("NotificationTime") %></span><br />
+                                                            <span class="message"><%#Eval("Subject") %></span>
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </ItemTemplate>
+                                        </asp:DataList>
+                                        <li id="liShowAll" runat="server" visible="false" class="nav-item">
+                                            <div class="text-center">
+                                                <a class="dropdown-item">
+                                                    <strong>See All Alerts</strong>
+                                                    <i class="fa fa-angle-right"></i>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+
+                <div class="right_col" role="main">
+                    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+                    <div class="col-sm-12">
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+                </div>
+
+
+                <footer>
+                    <div class="pull-right">
+                        Appoval System &copy; <%=System.DateTime.Now.Year %>|| M3M India
+                    </div>
+                    <div class="clearfix"></div>
+                </footer>
+
+            </div>
+        </div>
+    </form>
+    <script src="../vendors/jquery/dist/jquery.min.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/fastclick/lib/fastclick.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/nprogress/nprogress.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/Chart.js/dist/Chart.min.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/gauge.js/dist/gauge.min.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/iCheck/icheck.min.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/skycons/skycons.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/Flot/jquery.flot.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/Flot/jquery.flot.pie.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/Flot/jquery.flot.time.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/Flot/jquery.flot.stack.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/Flot/jquery.flot.resize.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/flot.orderbars/js/jquery.flot.orderBars.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/flot-spline/js/jquery.flot.spline.min.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/flot.curvedlines/curvedLines.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/DateJS/build/date.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/jqvmap/dist/jquery.vmap.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/jqvmap/dist/maps/jquery.vmap.world.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/jqvmap/examples/js/jquery.vmap.sampledata.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/moment/min/moment.min.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../build/js/custom.min.js" type="cdf0aa533589a27327df7cb7-text/javascript"></script>
+    <script src="../build/js/rocket-loader.min.js" data-cf-settings="cdf0aa533589a27327df7cb7-|49" defer=""></script>
+    <style>.msg_list {
+    max-height: 300px;
+    overflow-y: auto;
+}</style>
+     
+</body>
+</html>
